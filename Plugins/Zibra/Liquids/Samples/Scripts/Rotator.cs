@@ -10,7 +10,7 @@ namespace com.zibra.liquid.Samples
 
         protected void Update()
         {
-            transform.RotateAround(transform.localPosition, Vector3.up, rotationSpeed * Time.deltaTime);
+            transform.RotateAround(transform.localPosition, Vector3.left, rotationSpeed * Time.deltaTime);
         }
     }
 }

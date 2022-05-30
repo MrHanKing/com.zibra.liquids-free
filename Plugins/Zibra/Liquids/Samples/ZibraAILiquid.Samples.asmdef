@@ -1,10 +1,13 @@
 {
     "name": "ZibraAILiquid.Samples",
+    "rootNamespace": "",
     "references": [
         "ZibraAILiquid"
     ],
     "includePlatforms": [
         "Editor",
+        "macOSStandalone",
+        "WSA",
         "WindowsStandalone32",
         "WindowsStandalone64"
     ],

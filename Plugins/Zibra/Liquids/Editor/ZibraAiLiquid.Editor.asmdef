@@ -1,7 +1,8 @@
 {
     "name": "ZibraAILiquid.Settings.Editor",
     "references": [
-        "ZibraAILiquid"
+        "ZibraAILiquid",
+        "ZibraAILiquid.Editor"
     ],
     "includePlatforms": [
         "Editor"

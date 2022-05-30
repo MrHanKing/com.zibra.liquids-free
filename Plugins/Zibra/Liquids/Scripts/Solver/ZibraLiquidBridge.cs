@@ -1,264 +1,186 @@
 using System;
 using System.Runtime.InteropServices;
+using UnityEngine;
+using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering;
 
 namespace com.zibra.liquid.Solver
 {
     public static class ZibraLiquidBridge
     {
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern Int32 CreateFluidInstance();
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void RegisterParticlesBuffers(Int32 InstanceID, IntPtr ParticlesInitValues,
-                                                           IntPtr PositionMass, IntPtr Affine0, IntPtr Affine1,
-                                                           IntPtr PositionRadius, IntPtr ParticleNumber);
+#if UNITY_EDITOR
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
+// Editor library selection
+#if UNITY_EDITOR_WIN
+        public const String PluginLibraryName = "ZibraFluidNative_Win";
+#elif UNITY_EDITOR_OSX
+        public const String PluginLibraryName = "ZibraFluidNative_Mac";
 #else
-        [DllImport("ZibraFluidNative_Win_x86")]
+#error Unsupported platform
 #endif
-        public static extern void RegisterRenderResources(Int32 InstanceID, Int32 CameraID, IntPtr Depth, IntPtr Color0,
-                                                          IntPtr Color1, IntPtr AtomicGrid, IntPtr JFA0, IntPtr JFA1);
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
 #else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern IntPtr SetCameraParameters(Int32 InstanceID, IntPtr CameraRenderParams);
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
+// Player library selection
+#if UNITY_IOS || UNITY_TVOS
+        public const String PluginLibraryName = "__Internal";
+#elif UNITY_WSA
+        public const String PluginLibraryName = "ZibraFluidNative_WSA";
+#elif UNITY_STANDALONE_OSX
+        public const String PluginLibraryName = "ZibraFluidNative_Mac";
+#elif UNITY_STANDALONE_WIN
+        public const String PluginLibraryName = "ZibraFluidNative_Win";
+#elif UNITY_ANDROID
+        public const String PluginLibraryName = "ZibraFluidNative_Android";
 #else
-        [DllImport("ZibraFluidNative_Win_x86")]
+#error Unsupported platform
 #endif
-        public static extern IntPtr SetRenderParameters(Int32 InstanceID, IntPtr RenderParams);
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
 #endif
-        public static extern void SetCollidersCount(Int32 InstanceID, int count);
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern IntPtr GetRenderEventFunc();
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
+        [DllImport(PluginLibraryName)]
         public static extern IntPtr GetRenderEventWithDataFunc();
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void RegisterCollidersBuffers(Int32 InstanceID, IntPtr ForceTorque, IntPtr ObjPositions);
+        [DllImport(PluginLibraryName)]
+        public static extern IntPtr GPUReadbackGetData(Int32 InstanceID, UInt32 size);
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void RegisterSolverBuffers(Int32 InstanceID, IntPtr FluidParameters,
-                                                        IntPtr PositionMassCopy, IntPtr ParticleDensity,
-                                                        IntPtr GridData, IntPtr IndexGrid, IntPtr GridBlur0,
-                                                        IntPtr GridBlur1, IntPtr GridNormal, IntPtr GridSDF,
-                                                        IntPtr GridNodePositions, IntPtr NodeParticlePairs,
-                                                        IntPtr GridID, IntPtr SortTempBuf, IntPtr RadixGroupData);
+        [DllImport(PluginLibraryName)]
+        public static extern Int32 GetCurrentAffineBufferIndex(Int32 InstanceID);
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void SetFluidParameters(Int32 InstanceID, IntPtr FluidParameters);
+        [DllImport(PluginLibraryName)]
+        public static extern Int32 GarbageCollect();
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void RegisterVoxelCollider(Int32 InstanceID, IntPtr VoxelIDGrid1, IntPtr VoxelIDGrid2,
-                                                        IntPtr VoxelPositions, IntPtr VoxelEmbeddings, int VoxelNum,
-                                                        int colliderNumber);
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void RegisterManipulators(Int32 InstanceID, Int32 ManipulatorNum,
-                                                       IntPtr ManipulatorBufferDynamic, IntPtr ManipulatorBufferConst,
-                                                       IntPtr ManipulatorParams, Int32 ConstDataSize,
-                                                       IntPtr ConstManipulatorData);
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void UpdateManipulators(int InstanceID, IntPtr ManipulatorParams);
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void RegisterAnalyticCollider(Int32 InstanceID, int ColliderIndex);
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern void ReleaseResources(int InstanceID);
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern IntPtr RunSDFShaderWithDataPtr();
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
-        public static extern IntPtr GetCameraUpdateFunction();
-
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
+        [DllImport(PluginLibraryName)]
         public static extern bool IsPaidVersion();
 
-#if (UNITY_IOS || UNITY_TVOS || UNITY_WEBGL) && !UNITY_EDITOR
-        [DllImport("__Internal")]
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        [DllImport("ZibraFluidNative_Mac_x64")]
-#elif UNITY_64 || UNITY_EDITOR_64
-        [DllImport("ZibraFluidNative_Win_x64")]
-#else
-        [DllImport("ZibraFluidNative_Win_x86")]
-#endif
+        [DllImport(PluginLibraryName)]
         public static extern IntPtr GetVersionString();
 
         public static readonly string version = Marshal.PtrToStringAnsi(GetVersionString());
 
         public enum EventID : int
         {
-            None = 0, // only used for GetCameraUpdateFunction
-            InitParticles = 1,
-            SortParticles = 2,
-            StepPhysics = 3,
-            Draw = 4,
-            PrepareSDF = 5,
-            ComputeNeuralSDF = 6,
-            ComputeAnalyticSDF = 7,
-            UpdateLiquidParameters = 8,
-            UpdateManipulatorParameters = 9,
-            UpdateForceInteractionBuffers = 10,
-            ClearSDFAndID = 11,
+            None = 0,
+            StepPhysics = 1,
+            Draw = 2,
+            UpdateLiquidParameters = 3,
+            UpdateManipulatorParameters = 4,
+            ClearSDFAndID = 5,
+            CreateFluidInstance = 6,
+            RegisterParticlesBuffers = 7,
+            SetCameraParameters = 8,
+            SetRenderParameters = 9,
+            RegisterManipulators = 10,
+            RegisterSolverBuffers = 11,
+            RegisterRenderResources = 12,
+            ReleaseResources = 13,
+            InitializeGpuReadback = 14,
+            UpdateReadback = 15,
+            SetCameraParams = 16,
+            UpdateMeshRenderGlobalParameters = 17,
+            InitializeGraphicsPipeline = 18,
         }
+
+        public struct EventData
+        {
+            public int InstanceID;
+            public IntPtr ExtraData;
+        };
+
+        public enum LogLevel
+        {
+            Verbose = 0,
+            Info = 1,
+            Performance = 2,
+            Warning = 3,
+            Error = 4,
+        }
+
+        public enum TextureFormat
+        {
+            None,
+            R8G8B8A8_SNorm,
+            R16G16B16A16_SFloat,
+            R32G32B32A32_SFloat,
+            R16_SFloat,
+            R32_SFloat,
+        }
+        ;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct UnityTextureBridge
+        {
+            public IntPtr texture;
+            public TextureFormat format;
+        };
+
+        public static TextureFormat ToBridgeTextureFormat(GraphicsFormat format)
+        {
+            switch (format)
+            {
+            case GraphicsFormat.R8G8B8A8_UNorm:
+                return TextureFormat.R8G8B8A8_SNorm;
+            case GraphicsFormat.R16G16B16A16_SFloat:
+                return TextureFormat.R16G16B16A16_SFloat;
+            case GraphicsFormat.R32G32B32A32_SFloat:
+                return TextureFormat.R32G32B32A32_SFloat;
+            case GraphicsFormat.R16_SFloat:
+                return TextureFormat.R16_SFloat;
+            case GraphicsFormat.R32_SFloat:
+                return TextureFormat.R32_SFloat;
+            default:
+                return TextureFormat.None;
+            }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct DebugMessage
+        {
+            public IntPtr Text;
+            public LogLevel Level;
+        };
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct LoggerSettings
+        {
+            public IntPtr PFNCallback;
+            public LogLevel LogLevel;
+        };
 
         public static int EventAndInstanceID(EventID eventID, int InstanceID)
         {
             return (int)eventID | (InstanceID << 8);
+        }
+
+        public static void SubmitInstanceEvent(CommandBuffer cmd, int instanceID, EventID eventID,
+                                               IntPtr data = default)
+        {
+            EventData eventData;
+            eventData.InstanceID = instanceID;
+            eventData.ExtraData = data;
+
+            IntPtr eventDataNative = Marshal.AllocHGlobal(Marshal.SizeOf(eventData));
+            Marshal.StructureToPtr(eventData, eventDataNative, true);
+
+            cmd.IssuePluginEventAndData(GetRenderEventWithDataFunc(), (int)eventID, eventDataNative);
+        }
+
+        public static bool NeedGarbageCollect()
+        {
+            switch (UnityEngine.SystemInfo.graphicsDeviceType)
+            {
+            case GraphicsDeviceType.Vulkan:
+            case GraphicsDeviceType.Direct3D12:
+            case GraphicsDeviceType.XboxOneD3D12:
+#if UNITY_2020_3_OR_NEWER
+            case GraphicsDeviceType.GameCoreXboxOne:
+            case GraphicsDeviceType.GameCoreXboxSeries:
+#endif
+                return true;
+            default:
+                return false;
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ namespace com.zibra.liquid.DataStructures
     [Serializable]
     public struct VoxelEmbedding
     {
-        public Vector3Int coords;
-        public float[] embedding;
+        public Color32[] embeds;
+        public byte[] grid;
     }
 }

@@ -7,5 +7,7 @@ namespace com.zibra.liquid.DataStructures
     {
         public string vertices;
         public string faces;
+        public int vox_dim;
+        public int sdf_dim;
     }
 }

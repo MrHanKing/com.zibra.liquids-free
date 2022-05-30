@@ -15,8 +15,6 @@ namespace com.zibra.liquid.Samples
         private float camPhi;
         private float camTheta;
 
-        public Manipulators.ZibraLiquidEmitter emitter;
-
         protected void Start()
         {
             var mainCamera = Camera.main;
@@ -103,19 +101,6 @@ namespace com.zibra.liquid.Samples
             lastMouse = Input.mousePosition;
 
             camVel += Quaternion.Euler(camPhi, camTheta, 0) * GetBaseInput() * camSpeed;
-
-            if (emitter != null)
-            {
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    emitter.ParticlesPerSec = 8000;
-                    emitter.Velocity = Quaternion.Euler(camPhi, camTheta, 0) * (new Vector3(0, 0, 1)) * 1.8f;
-                }
-                else
-                {
-                    emitter.ParticlesPerSec = 0;
-                }
-            }
 
             camPos += camVel * Time.smoothDeltaTime;
             camVel *= 0.94f;

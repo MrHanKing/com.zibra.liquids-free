@@ -38,6 +38,13 @@ namespace com.zibra.liquid.Utilities
             return Convert.ToBase64String(byteArray);
         }
 
+        public static byte[] StringToBytes(this string input)
+        {
+            var bytes = Convert.FromBase64String(input);
+
+            return bytes;
+        }
+
         public static float[] StringToFloat(this string input)
         {
             var bytes = Convert.FromBase64String(input);

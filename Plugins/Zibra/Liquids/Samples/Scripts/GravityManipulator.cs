@@ -1,16 +1,17 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using com.zibra.liquid.Solver;
 
 namespace com.zibra.liquid.Samples
 {
     public class GravityManipulator : MonoBehaviour
     {
-        ZibraLiquid liquid;
+        Solver.ZibraLiquid liquid;
 
         // Start is called before the first frame update
         void Start()
         {
-            liquid = GetComponent<ZibraLiquid>();
+            liquid = GetComponent<Solver.ZibraLiquid>();
         }
 
         // Update is called once per frame

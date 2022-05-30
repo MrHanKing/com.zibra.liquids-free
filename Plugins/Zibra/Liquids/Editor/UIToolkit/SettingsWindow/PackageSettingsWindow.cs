@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using com.zibra.liquid;
 using com.zibra.liquid.Foundation.Editor;
 using com.zibra.liquid.Foundation.UIElements;
 using UnityEditor.UIElements;
-using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace com.zibra.liquid.Plugins.Editor
 {

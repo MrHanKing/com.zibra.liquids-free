@@ -6,7 +6,6 @@ namespace com.zibra.liquid.DataStructures
     public class VoxelRepresentation
     {
         public string embeds;
-        public string vox_ids;
-        public int shape;
+        public string sd_grid;
     }
 }

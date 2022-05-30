@@ -5,8 +5,8 @@ namespace com.zibra.liquid
 {
     internal static class ZibraAIPackage
     {
-        public const string ZibraAiSupportEmail = "support@zibraai.com";
-        public const string ZibraAiCeoEMail = "ceo@zibraai.com";
+        public const string ZibraAiSupportEmail = "support@zibra.ai";
+        public const string ZibraAiCeoEMail = "hello@zibra.ai";
         public const string ZibraAiWebsiteRootUrl = "https://zibra.ai/";
 
         public const string PackageName = "com.zibraai.liquid";
